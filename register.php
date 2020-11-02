@@ -23,7 +23,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     $username = trim($_POST["username"]);
                 }
             } else {
-                echo "Došlo je do greške. Pokušajte kasnije, hvala.";
+                echo '<script type="text/javascript">alert("Došlo je do greške prilikom registracije."); 
+                window.location.href = "http://localhost/iteh-domaci/register.php";</script>';
             }
 
             $stmt->close();
