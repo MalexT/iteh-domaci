@@ -12,7 +12,6 @@ if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
 
 $result = Mediji::getAll($conn);
 
-
 if (!$result) {
     echo "Nastala je greška pri izvođenju upita<br>";
     die();

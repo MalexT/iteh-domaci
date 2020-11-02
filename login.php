@@ -7,47 +7,32 @@ if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
     exit;
 }
 
-
 require_once "config.php";
 
 
 $username = $password = "";
-$username_err = $password_err = "";
+$username_error = $password_error = "";
 
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-
-
     if (empty(trim($_POST["username"]))) {
-        $username_err = "Unesite vaše korisničko ime.";
+        $username_error = "Unesite vaše korisničko ime.";
     } else {
         $username = trim($_POST["username"]);
     }
-
-
     if (empty(trim($_POST["password"]))) {
-        $password_err = "Unesite vašu šifru.";
+        $password_error = "Unesite vašu šifru.";
     } else {
         $password = trim($_POST["password"]);
     }
-
-    
-    if (empty($username_err) && empty($password_err)) {
-        
+    if (empty($username_error) && empty($password_error)) {
         $sql = "SELECT id, username, password FROM users WHERE username = ?";
-
         if ($stmt = $conn->prepare($sql)) {
-            
             $stmt->bind_param("s", $param_username);
-
-
             $param_username = $username;
             if ($stmt->execute()) {
-
                 $stmt->store_result();
-
                 if ($stmt->num_rows == 1) {
-
                     $stmt->bind_result($id, $username, $hashed_password);
                     if ($stmt->fetch()) {
                         if (password_verify($password, $hashed_password)) {
@@ -57,11 +42,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                             $_SESSION["username"] = $username;
                             header("location: home.php");
                         } else {
-                            $password_err = "Uneli ste neispravnu šifru.";
+                            $password_error = "Uneli ste neispravnu šifru.";
                         }
                     }
                 } else {
-                    $username_err = "Ne postoji to korisničko ime.";
+                    $username_error = "Ne postoji to korisničko ime.";
                 }
             } else {
                 echo '<script type="text/javascript">alert("Došlo je do greške!"); 
@@ -95,15 +80,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
                     <h1 style="text-align:center">Prijava</h1>
                     <br>
-                    <div class="form-group <?php echo (!empty($username_err)) ? 'has-error' : ''; ?>" style="margin-left:10%; margin-right:-40%">
+                    <div class="form-group <?php echo (!empty($username_error)) ? 'has-error' : ''; ?>" style="margin-left:10%; margin-right:-40%">
                         <label style="color:white">Korisničko ime</label>
                         <input type="text" name="username" class="form-control" value="<?php echo $username; ?>">
-                        <span class="help-block"><?php echo $username_err; ?></span>
+                        <span class="help-block"><?php echo $username_error; ?></span>
                     </div>
-                    <div class="form-group <?php echo (!empty($password_err)) ? 'has-error' : ''; ?>" style="margin-left:10%; margin-right:-40%">
+                    <div class="form-group <?php echo (!empty($password_error)) ? 'has-error' : ''; ?>" style="margin-left:10%; margin-right:-40%">
                         <label style="color:white">Šifra</label>
                         <input type="password" name="password" class="form-control">
-                        <span class="help-block"><?php echo $password_err; ?></span>
+                        <span class="help-block"><?php echo $password_error; ?></span>
                     </div>
                     <div class="form-group" style="margin-left:43%; margin-right:-40%">
                         <input type="submit" class="w3-button w3-round-large w3-hover-blue w3-black" style="background:#33bca5" value="Prijava">
