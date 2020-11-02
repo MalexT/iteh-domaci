@@ -4,7 +4,6 @@ function closeNav() {
 function openNav() {
     document.getElementById("mySidenav").style.width = "250px";
 }
-
 $('#obrisi').click(function () {
     const checked = $('input[name=checked-donut]:checked');
 
@@ -44,11 +43,9 @@ $('#btnAdd').submit(function () {
 
 $('#dodajForm').submit(function () {
     event.preventDefault();
-    console.log("Ovde");
     const $form = $(this);
     const $inputs = $form.find('input, select, button, textarea');
-    const serializedData = $form.serialize();
-    console.log(serializedData);
+    const serializedData = $form.serialize(); 
     $inputs.prop('disabled', true);
 
     request = $.ajax({
@@ -60,7 +57,6 @@ $('#dodajForm').submit(function () {
     request.done(function (response, textStatus, jqXHR) {
         if (response === 'Success') {
             alert('Medij je dodat');
-            console.log('EVO');
             location.reload(true);
         }
         else console.log('Sir nije dodat ' + response);
@@ -88,23 +84,13 @@ $('#link-izmeni').click(function () {
     });
 
     request.done(function (response, textStatus, jqXHR) {
-        console.log('Popunjena');
         $('#nazivMed').val(response[0]['naziv']);
-        console.log(response[0]['naziv']);
-
-        $('#zemljaMed').val(response[0]['zemlja'].trim());
-        console.log(response[0]['zemlja'].trim());
-        $('#zemljaMed').val(response[0]['naziv'].trim());
-        console.log(response[0]['naziv'].trim());
-        $('#karakterMed').val(response[0]['karakter_medija'].trim());
-        console.log(response[0]['karakter_medija'].trim());
+        $('#zemljaMed').val(response[0]['zemlja'].trim());       
+        $('#zemljaMed').val(response[0]['naziv'].trim());        
+        $('#karakterMed').val(response[0]['karakter_medija'].trim());      
         $('#godOsnMed').val(response[0]['god_osnivanja'].trim());
-        console.log(response[0]['god_osnivanja'].trim());
         $('#id').val(checked.val());
-
-        console.log(response);
     });
-
     request.fail(function (jqXHR, textStatus, errorThrown) {
         console.error('The following error occurred: ' + textStatus, errorThrown);
     });
@@ -113,7 +99,6 @@ $('#link-izmeni').click(function () {
 
 $('#Izmeni').submit(function () {
     event.preventDefault();
-    console.log("Izmjene");
     const $form = $(this);
     const $inputs = $form.find('input, select, button, textarea');
     const serializedData = $form.serialize();
@@ -131,19 +116,14 @@ $('#Izmeni').submit(function () {
         if (response === 'Success') {
             alert('Medij je izmenjen');
             console.log('Medij je izmenjen');
-            location.reload(true);
-            //$('#izmeniForm').reset;
+            location.reload(true);            
         }
         else console.log('Medij nije izmenjen ' + response);
         console.log(response);
     });
-
     request.fail(function (jqXHR, textStatus, errorThrown) {
         console.error('The following error occurred: ' + textStatus, errorThrown);
     });
-
-
-    //$('#izmeniModal').modal('hide');
 });
 
 function pretraga() {

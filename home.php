@@ -5,13 +5,9 @@ require "models/mediji.php";
 
 session_start();
 
-if (!isset($_SESSION['user_id'])) {
-    header('Location: index.php');
-    exit();
-} elseif (isset($_GET['logout']) && !empty($_GET['logout'])) {
-    session_unset();
-    session_destroy();
-    header("Location: index.php");
+if (!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true) {
+    header("location: login.php");
+    exit;
 }
 
 $result = Mediji::getAll($conn);
@@ -37,40 +33,38 @@ if ($result->num_rows == 0) {
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="shortcut icon" type="image/x-icon" href="img/favicon-01.png" />
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-
-
         <link rel="stylesheet" type="text/css" href="css/home.css">
-
         <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+        
         <title>Wolfz</title>
     </head>
 
     <body>
         <div id="mySidenav" class="sidenav">
             <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-            <a id="prikazi" href="#">Prikazi</a>
+            <a id="prikazi" href="#">Prikaži</a>
             <a href="#" onclick="document.getElementById('id01').style.display='block'">Dodaj</a>
             <a href="#" id="link-izmeni" onclick="document.getElementById('id02').style.display='block'">Izmeni</a>
-            <a href="#" id="obrisi">Obrisi</a>
-            <a href="#">Sortiraj</a>
-            <a href="home.php?logout=true"> Odjavi se</a>
+            <a href="#" id="obrisi">Obriši</a>
+            <a href="logout.php" class="five"> Odjavi se</a>
+
         </div>
 
         <div>
             <button class="w3-button w3-metro-darken w3-xlarge" onclick="openNav()" style="margin: 40px 40px 40px 40px;">☰</button>
             <div>
                 <div class="jumbotron">
-                    <h1>Dobrodošao</h1>
+                    <h1>Dobrodošao, <b><?php echo htmlspecialchars($_SESSION["username"]); ?></b></h1>
                     <br>
-                    <h2>Ispod se nalazi tabela medija koji su podrzali ovaj projekat</h2>
+                    <h2>Ispod se nalazi tabela medija koji su podržali ovaj projekat</h2>
                 </div>
             </div>
         </div>
-        
+
 
         <div id="tabela" class="container">
             <div class="row">
-            <input class="w3-input w3-border w3-padding" type="text" placeholder="Pretraga" id="myInput" onkeyup="pretraga()">
+                <input class="w3-input w3-border w3-padding" type="text" placeholder="Pretraga" id="myInput" onkeyup="pretraga()">
                 <br>
                 <div class="col-md-12">
                 </div>
@@ -82,7 +76,7 @@ if ($result->num_rows == 0) {
                                 <th>Naziv</th>
                                 <th class="numeric">Zemlja</th>
                                 <th class="numeric">Karakter medija</th>
-                                <th class="numeric">Novcani iznos</th>
+                                <th class="numeric">Datum osnivanja medija</th>
                                 <th class="numeric">Izaberi</th>
 
                             </tr>
@@ -110,6 +104,10 @@ if ($result->num_rows == 0) {
                         } ?>
                         </tbody>
                     </table>
+                    <br>
+                    <form action="excel.php" method="post" style="text-align: center">
+                        <input type="submit" name="izvestaj" class="w3-button w3-hover-white w3-right" style="color:red; " value="Preuzmi tabelu" />
+                    </form>
                 </div>
             </div>
 
@@ -135,7 +133,7 @@ if ($result->num_rows == 0) {
                                     <input type="date" style="border: 2px solid black" name="god_osnivanja" class="form-control" placeholder="Datum osnivanja medija *" value="" />
                                 </div>
                                 <div class="form-group">
-                                    <button id="btnAdd" type="submit" class="btn btn-success btn-block" style="background-color: black; border: 2px solid black;"><i class="glyphicon glyphicon-plus"></i> Dodaj Medije
+                                    <button id="btnAdd" type="submit" class="btn btn-success btn-block" style="background-color: black; border: 2px solid black;"><i class="glyphicon glyphicon-plus"></i> Dodaj Medij
                                     </button>
                                 </div>
                             </div>
@@ -170,7 +168,7 @@ if ($result->num_rows == 0) {
                                     <input id="godOsnMed" type="date" style="border: 2px solid black" name="god_osnivanjaM" class="form-control" placeholder="Datum osnivanja medija *" value="" />
                                 </div>
                                 <div class="form-group">
-                                    <button id="btnChange" type="submit" class="btn btn-success btn-block" style="background-color: black; border: 2px solid black;"><i class="glyphicon glyphicon-plus"></i> Dodaj Medije
+                                    <button id="btnChange" type="submit" class="btn btn-success btn-block" style="background-color: black; border: 2px solid black;"><i class="glyphicon glyphicon-plus"></i> Izmeni Medij
                                     </button>
                                 </div>
                             </div>
@@ -185,22 +183,6 @@ if ($result->num_rows == 0) {
                         </div>
                     </form>
                 </div>
-            </div>
-        </div>
-
-        <div id="id03" class="w3-modal">
-            <div class="w3-modal-content w3-card-4">
-                <header class="w3-container w3-metro-darken">
-                    <span onclick="document.getElementById('id03').style.display='none'" class="w3-button w3-display-topright">&times;</span>
-                    <h2 style="text-align:center">Dodaj</h2>
-                </header>
-                <div class="w3-container">
-                    <p>Some text. Some text. Some text.</p>
-                    <p>Some text. Some text. Some text.</p>
-                </div>
-                <footer class="w3-container w3-metro-darken">
-                    <p>Footer</p>
-                </footer>
             </div>
         </div>
 

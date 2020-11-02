@@ -25,47 +25,11 @@ body{
   background-attachment: fixed;
 }
 
-button {
-  border: 2px solid black;
-}
-
-.table {
-  background-color: black;
-}
-
-.btnSubmit
-{
-  width: 50%;
-  border-radius: 1rem;
-  padding: 1.5%;
-  color: #fff;
-  background-color: #0062cc;
-  border: none;
-  cursor: pointer;
-}
-
-div.modal-content, div.container.sir-form {
-  background-image: url("../img/background.jpeg");
-}
-
-.panel-info>.panel-heading {
-  color: #31708f;
-  background-color: #d9edf700;
-  border-color: #bce8f100;
-}
 
 p{
   color: black;
 }
 
-.row{
-  padding:1% 5% 1% 5%;
-  margin-top: 5%;
-}
-
-.th{
-  background-color: white;
-}
 .numeric{
   text-align: center;
 }
@@ -146,6 +110,9 @@ Label the data
 /* When you mouse over the navigation links, change their color */
 .sidenav a:hover {
   color: #f1f1f1;
+}
+.sidenav a.five:hover{
+  color:red;
 }
 
 /* Position and style the close button (top right corner) */

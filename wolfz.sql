@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 31, 2020 at 04:00 PM
+-- Generation Time: Nov 02, 2020 at 01:23 AM
 -- Server version: 10.4.14-MariaDB
 -- PHP Version: 7.4.10
 
@@ -31,20 +31,20 @@ CREATE TABLE `mediji` (
   `id` int(5) UNSIGNED NOT NULL,
   `naziv` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `zemlja` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `god_osnivanja` date NOT NULL,
-  `karakter_medija` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL
+  `karakter_medija` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `god_osnivanja` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `mediji`
 --
 
-INSERT INTO `mediji` (`id`, `naziv`, `zemlja`, `god_osnivanja`, `karakter_medija`) VALUES
-(1, 'Pink', 'Srbija', '1994-12-15', 'Informativni i društveno-političke teme'),
-(2, 'Nova.rs', 'Srbija', '2017-12-15', 'Informativni i društveno-političke teme'),
-(3, 'RTS', 'Srbija', '1927-04-02', 'Razonoda i slobodno vreme'),
-(4, 'NatGeo', 'Srbija', '1888-09-22', 'Istraživačko novinarstvo'),
-(5, 'CNN', 'Srbija', '1980-07-10', 'Edukativni, aktivistički, mediji civilnog sektora');
+INSERT INTO `mediji` (`id`, `naziv`, `zemlja`, `karakter_medija`, `god_osnivanja`) VALUES
+(1, 'Pink', 'Pink', 'Informativni i drustveno-politiske teme', '2010-01-11'),
+(2, 'Nova.rs', 'Nova.rs', 'Informativni i drustveno-politicke teme', '2008-09-25'),
+(3, 'RTS', 'RTS', 'Razonoda i slobodno vreme', '2009-01-29'),
+(4, 'NatGeo', 'NatGeo', 'Istrazivacko novinarstvo', '1933-06-28'),
+(5, 'CNN', 'CNN', 'Edukativni, aktivisticki, mediji civilnog sektora', '1942-04-16');
 
 -- --------------------------------------------------------
 
@@ -74,23 +74,24 @@ INSERT INTO `sponzori` (`id`, `naziv`, `opis`, `datumOsnivanja`, `paket`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `user`
+-- Table structure for table `users`
 --
 
-CREATE TABLE `user` (
-  `id` int(5) UNSIGNED NOT NULL,
-  `username` varchar(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-  `password` varchar(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-  `name` varchar(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+CREATE TABLE `users` (
+  `id` int(11) NOT NULL,
+  `username` varchar(50) NOT NULL,
+  `password` varchar(255) NOT NULL,
+  `created_at` datetime DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data for table `user`
+-- Dumping data for table `users`
 --
 
-INSERT INTO `user` (`id`, `username`, `password`, `name`) VALUES
-(1, 'maleksa', 'maleksa', 'maleksoni'),
-(2, 'admin', 'admin', 'administrator');
+INSERT INTO `users` (`id`, `username`, `password`, `created_at`) VALUES
+(14, '1', '$2y$10$0Tbdee.REeSHGfP7znuHfOxAPhDSXMF2.czy5GDYj.EKpgp11YlFu', '2020-11-02 00:49:24'),
+(16, '2', '$2y$10$ZTeEIwR/58b90HbmGl5u3uuUHxo0xHAofomX1zcPkYpI75lNAcoHu', '2020-11-02 00:51:32'),
+(17, '3', '$2y$10$pKwoLzWqUoBlX3z0B9m2fOsDqdX.cfgm1l4bX3oNwHBcEkfeAA/ra', '2020-11-02 00:52:48');
 
 --
 -- Indexes for dumped tables
@@ -109,10 +110,11 @@ ALTER TABLE `sponzori`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `user`
+-- Indexes for table `users`
 --
-ALTER TABLE `user`
-  ADD PRIMARY KEY (`id`);
+ALTER TABLE `users`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `username` (`username`);
 
 --
 -- AUTO_INCREMENT for dumped tables
@@ -122,7 +124,7 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT for table `mediji`
 --
 ALTER TABLE `mediji`
-  MODIFY `id` int(5) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(5) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `sponzori`
@@ -131,10 +133,10 @@ ALTER TABLE `sponzori`
   MODIFY `id` int(5) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
--- AUTO_INCREMENT for table `user`
+-- AUTO_INCREMENT for table `users`
 --
-ALTER TABLE `user`
-  MODIFY `id` int(5) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+ALTER TABLE `users`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
